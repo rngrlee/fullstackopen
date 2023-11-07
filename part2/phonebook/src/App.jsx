@@ -33,6 +33,20 @@ const App = () => {
     event.preventDefault()
     console.log('button clicked', event.target)
 
+    if (persons.map(object => object.name).includes(newName) && 
+    !persons.map(object => object.number).includes(newNumber)) {
+      if (confirm(`${newName} is already in phonebook, replace number with new one?`)) {
+        const person = persons.find(person => person.name === newName)
+        const changedPerson = {...person, number: newNumber}
+        personService
+          .update(person.id, changedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.name !== newName ? person : returnedPerson))
+          })
+          return
+      }
+    }
+
     const newPersonObject = {
       name: newName,
       number: newNumber,
