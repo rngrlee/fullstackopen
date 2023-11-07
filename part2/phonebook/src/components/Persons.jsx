@@ -1,9 +1,7 @@
-const Persons = ({ searchTerm, filteredPersons, persons }) => {
+const Persons = ({ person, deletePerson }) => {
     return (
         <>
-            {searchTerm.length > 0 ? 
-            filteredPersons.map(person => <p>{person.name} {person.number}</p>) : 
-            persons.map(person => <p>{person.name} {person.number}</p>)}
+            <p>{person.name} {person.number} <button onClick={deletePerson}>delete</button></p>
         </>
     )
 }

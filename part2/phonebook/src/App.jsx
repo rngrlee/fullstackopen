@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+// import axios from 'axios'
+import personService from './services/personService'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/filter'
@@ -14,11 +15,11 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
+    personService
+      .getAll()
+      .then(initialPersons => {
         console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(initialPersons)
       })
   }, [])
   console.log('render', persons.length, 'persons')  
@@ -48,9 +49,27 @@ const App = () => {
       return
     }
 
+    personService
+      .create(newPersonObject)
+      .then(returnedPerson => {
+      setPersons(persons.concat(returnedPerson))
+    })
+
     setPersons(persons.concat(newPersonObject))
     setNewNumber('')
     setNewName('')
+  }
+
+  const deletePerson = (id) => {
+    const person = persons.find(p => p.id === id)
+    if (confirm(`Delete ${person.name}?`)) {
+      personService
+        .axiosDelete(id)
+        .then(() => {
+          console.log(`Deleted ${person.name}, id ${id}`)
+        })
+        setPersons(persons.filter(person => person.id !== id))
+    }
   }
 
   const handleNumberChange = (event) => {
@@ -61,11 +80,13 @@ const App = () => {
   const handleSearchTermChange = (event) => {
     console.log(event.target.value)
     setSearchTerm(event.target.value)
-    const caseInsensitiveSearch = event.target.value.toLowerCase()
-    setFilteredPersons(persons.filter(obj => obj.name.toLowerCase().includes(caseInsensitiveSearch)))
-    console.log(filteredPersons)
   }
 
+  const personsDisplayed = searchTerm 
+    ? persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    : persons
+
+  console.log('personsDisplayed', personsDisplayed)
 
   return (
     <div>
@@ -75,7 +96,12 @@ const App = () => {
       <PersonForm addNewPerson={addNewPerson} newName={newName} handleNameChange={handleNameChange}
       newNumber={newNumber} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      <Persons searchTerm={searchTerm} filteredPersons={filteredPersons} persons={persons}/>
+      {personsDisplayed.map(person =>
+        <Persons
+        key={person.id}
+        person={person}
+        deletePerson={() => deletePerson(person.id)} />
+      )}
       {/* for debugging */}
       {/* <div>debug name: {newName}</div>
       <div>debug number: {newNumber}</div>
