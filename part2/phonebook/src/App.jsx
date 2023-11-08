@@ -4,6 +4,7 @@ import personService from './services/personService'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/filter'
+import Notification from './services/errorMessage'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -12,6 +13,7 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [idNum, setIdNum] = useState(5)
   const [filteredPersons, setFilteredPersons] = useState([])
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -43,7 +45,19 @@ const App = () => {
           .then(returnedPerson => {
             setPersons(persons.map(person => person.name !== newName ? person : returnedPerson))
           })
-          return
+          .catch(error => {
+            setErrorMessage(
+            `Person ${person.name} was already removed from server`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
+        setErrorMessage(`${person.name}'s number has been updated`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+          return 
       }
     }
 
@@ -72,6 +86,10 @@ const App = () => {
     setPersons(persons.concat(newPersonObject))
     setNewNumber('')
     setNewName('')
+    setErrorMessage(`${newPersonObject.name} has been added to the server`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
   }
 
   const deletePerson = (id) => {
@@ -83,6 +101,10 @@ const App = () => {
           console.log(`Deleted ${person.name}, id ${id}`)
         })
         setPersons(persons.filter(person => person.id !== id))
+        setErrorMessage(`${person.name} has been deleted from the server`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
     }
   }
 
@@ -105,6 +127,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange}/>
       <h2>add a new</h2>
       <PersonForm addNewPerson={addNewPerson} newName={newName} handleNameChange={handleNameChange}
