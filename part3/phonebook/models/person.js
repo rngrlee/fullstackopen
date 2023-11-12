@@ -15,7 +15,6 @@ mongoose.connect(url)
   })
 
 const personSchema = new mongoose.Schema({
-    id: Number,
     name: String,
     number: String
     })
@@ -28,4 +27,4 @@ personSchema.set('toJSON', {
     }
   })
 
-module.exports = mongoose.model('Person', noteSchema)
+module.exports = mongoose.model('Person', personSchema)
