@@ -66,7 +66,7 @@ app.get('/api/persons/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndDelete(request.params.id)
     .then(result => {
       response.status(204).end()
@@ -74,28 +74,29 @@ app.delete('/api/persons/:id', (request, response) => {
     .catch(error => next(error))
 })
   
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const body = request.body
 
-    if (!body.name) {
-        return response.status(400).json({ error: 'missing name' })
-    }
-    if (!body.number) {
-        return response.status(400).json({ error: 'missing number' })
-    }
-    if (persons.some(person => person.name === body.name )) {
-        return response.status(403).json({ error: 'name must be unique' })
-    }
+    // if (!body.name) {
+    //     return response.status(400).json({ error: 'missing name' })
+    // }
+    // if (!body.number) {
+    //     return response.status(400).json({ error: 'missing number' })
+    // }
+    // if (persons.some(person => person.name === body.name )) {
+    //     return response.status(403).json({ error: 'name must be unique' })
+    // }
 
     const person = new Person ({
-        id: Math.floor(Math.random() * 1000000),
         name: body.name,
         number: body.number,
       })
 
-    person.save().then(savedPerson => {
-        response.json(person)
+    person.save()
+        .then(savedPerson => {
+        response.json(savedPerson)
     })
+    .catch(error => next(error))
 })
 
 const errorHandler = (error, request, response, next) => {
