@@ -83,6 +83,7 @@ const App = () => {
       setPersons(persons.concat(returnedPerson))
     })
     .catch(error => {
+      setErrorMessage(error.response.data.error)
       console.log(error.response.data.error)
     })
 
