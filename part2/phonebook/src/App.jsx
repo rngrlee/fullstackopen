@@ -64,7 +64,6 @@ const App = () => {
     const newPersonObject = {
       name: newName,
       number: newNumber,
-      id: Math.max(persons.id) + 1
     }
 
     if (persons.map(object => object.name).includes(newName)) {
