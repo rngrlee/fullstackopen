@@ -82,6 +82,9 @@ const App = () => {
       .then(returnedPerson => {
       setPersons(persons.concat(returnedPerson))
     })
+    .catch(error => {
+      console.log(error.response.data.error)
+    })
 
     setPersons(persons.concat(newPersonObject))
     setNewNumber('')
