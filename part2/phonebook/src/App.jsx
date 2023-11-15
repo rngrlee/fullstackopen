@@ -6,7 +6,7 @@ import Filter from './components/filter'
 import Notification from './services/errorMessage'
 
 const App = () => {
-  
+
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -79,7 +79,6 @@ const App = () => {
       console.log(error.response.data.error)
     })
 
-    setPersons(persons.concat(newPersonObject))
     setNewNumber('')
     setNewName('')
     setErrorMessage(`${newPersonObject.name} has been added to the server`)
