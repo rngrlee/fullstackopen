@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-// import axios from 'axios'
 import personService from './services/personService'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
@@ -7,12 +6,11 @@ import Filter from './components/filter'
 import Notification from './services/errorMessage'
 
 const App = () => {
+  
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
-  const [idNum, setIdNum] = useState(5)
-  const [filteredPersons, setFilteredPersons] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
@@ -25,11 +23,6 @@ const App = () => {
       })
   }, [])
   console.log('render', persons.length, 'persons')  
-
-  const handleNameChange = (event) => {
-    console.log(event.target.value)
-    setNewName(event.target.value)
-  } 
 
   const addNewPerson = (event) => {
     event.preventDefault()
@@ -110,6 +103,11 @@ const App = () => {
         }, 5000)
     }
   }
+
+  const handleNameChange = (event) => {
+    console.log(event.target.value)
+    setNewName(event.target.value)
+  } 
 
   const handleNumberChange = (event) => {
     console.log(event.target.value)
