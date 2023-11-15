@@ -53,7 +53,6 @@ const App = () => {
           return 
       }
     }
-  }
 
     const newPersonObject = {
       name: newName,
@@ -88,6 +87,7 @@ const App = () => {
           setErrorMessage(null)
         }, 5000)
       })
+    }
 
   const deletePerson = (id) => {
     const person = persons.find(p => p.id === id)
