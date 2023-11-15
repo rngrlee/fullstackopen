@@ -53,6 +53,7 @@ const App = () => {
           return 
       }
     }
+  }
 
     const newPersonObject = {
       name: newName,
@@ -72,7 +73,13 @@ const App = () => {
     personService
       .create(newPersonObject)
       .then(returnedPerson => {
-      setPersons(persons.concat(returnedPerson))
+        setErrorMessage(`added ${returnedPerson.name}`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        setPersons(persons.concat(returnedPerson))
+        setNewNumber('')
+        setNewName('')
     })
     .catch(error => {
       setErrorMessage(error.response.data.error)
@@ -81,14 +88,6 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)
     })
-
-    setNewNumber('')
-    setNewName('')
-    setErrorMessage(`${newPersonObject.name} has been added to the server`)
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-  }
 
   const deletePerson = (id) => {
     const person = persons.find(p => p.id === id)
