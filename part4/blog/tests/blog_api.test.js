@@ -2,9 +2,9 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
-const Blog = require('..models/blog')
+const Blog = require('../models/blog')
 
-const initalBlogs = [
+const initialBlogs = [
     {
         title: 'Blog 1',
         author: 'Blogger 1',
@@ -39,7 +39,7 @@ test('correct amount of blog posts', async () => {
     expect(response.body).toHaveLength(initialBlogs.length)
 })
 
-test('id property of exists for each blog post', async () => {
+test('id property exists for each blog post', async () => {
     const response = await api.get('/api/blogs')
     response.body.forEach(blog => {
         expect(blog.id).toBeDefined()
@@ -56,13 +56,14 @@ test('new blog can be added', async () => {
     }
 
     await api
-        .post(/api/blogs)
+        .post('/api/blogs')
+        .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
     const titles = response.body.map(blog => blog.title)
-    expect(response.body).toHaveLength(initalBlogs + 1)
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
     expect(titles).toContain('New Blog')
 })
   
