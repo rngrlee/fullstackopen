@@ -38,6 +38,33 @@ test('correct amount of blog posts', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(initialBlogs.length)
 })
+
+test('id property of exists for each blog post', async () => {
+    const response = await api.get('/api/blogs')
+    response.body.forEach(blog => {
+        expect(blog.id).toBeDefined()
+    })
+})
+
+test('new blog can be added', async () => {
+
+    const newBlog = {
+        title: 'New Blog',
+        author: 'New Blog Author',
+        url: 'https://newblog.com',
+        likes: 0
+    }
+
+    await api
+        .post(/api/blogs)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    const titles = response.body.map(blog => blog.title)
+    expect(response.body).toHaveLength(initalBlogs + 1)
+    expect(titles).toContain('New Blog')
+})
   
 
 afterAll(async () => {
