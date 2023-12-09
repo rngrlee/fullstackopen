@@ -51,7 +51,7 @@ describe('when adding a new blog', () => {
     
         const response = await api.get('/api/blogs')
         const titles = response.body.map(blog => blog.title)
-        expect(response.body).toHaveLength(initialBlogs.length + 1)
+        expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
         expect(titles).toContain('New Blog')
     })
       
