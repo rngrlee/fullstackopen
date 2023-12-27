@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notif from './components/Notif'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [success, setSuccess] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -45,10 +47,11 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {
-      setErrorMessage('Wrong credentials')
+    } catch (error) {
+      setSuccess(false)
+      setMessage('Wrong credentials')
       setTimeout(() => {
-        setErrorMessage(null)
+        setMessage(null)
       }, 5000)
     }
   }
@@ -74,8 +77,16 @@ const App = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      setSuccess(true)
+      setMessage(`${title} by ${author} added`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     } catch (error) {
-      console.log(error.response.data.error)
+      setMessage(error.response.data.error)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
   }
 
@@ -130,6 +141,7 @@ const App = () => {
 
   return (
     <div>
+      <Notif message={message} success={success}/>
       {user === null
         ? loginForm()
         : blogForm()}
