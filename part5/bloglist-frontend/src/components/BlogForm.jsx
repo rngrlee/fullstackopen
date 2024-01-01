@@ -9,9 +9,9 @@ const BlogForm = ({ createBlog }) => {
         event.preventDefault()
 
         createBlog({
-        title: title,
-        author: author,
-        url: url
+            title: title,
+            author: author,
+            url: url
         })
         setTitle('')
         setAuthor('')
