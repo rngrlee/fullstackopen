@@ -33,7 +33,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password
@@ -105,15 +105,15 @@ const App = () => {
         setTimeout(() => {
           setMessage(null)
         }, 5000)
-      } 
+      }
     } catch (error) {
-    console.log(error.response.data.error)
+      console.log(error.response.data.error)
     }
   }
 
   const loginForm = () => (
     <>
-    <h2>Log in to application</h2>
+      <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
         <div>
           username
@@ -125,7 +125,7 @@ const App = () => {
         </div>
         <button type="submit">login</button>
       </form>
-    </>      
+    </>
   )
 
   const blogFormRef = useRef()
@@ -145,10 +145,10 @@ const App = () => {
         </Togglable>
 
         {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-            <Blog key={blog.id} blog={blog} user={user} updateBlog={handleLike} deleteBlog={handleDelete}/>
-          )}
+          <Blog key={blog.id} blog={blog} user={user} updateBlog={handleLike} deleteBlog={handleDelete}/>
+        )}
       </>
-    )  
+    )
   }
 
   return (

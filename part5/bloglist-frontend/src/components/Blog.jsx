@@ -42,7 +42,7 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
         </button>
       </div>
       {visible && viewedBlog()}
-    </div>  
+    </div>
   )
 }
 
