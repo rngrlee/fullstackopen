@@ -6,61 +6,61 @@ import Blog from './Blog'
 
 
 describe('Blog', () => {
-    const blog = {
-        title: 'test blog',
-        author: 'test author',
-        url: 'testurl.com',
-        id: '696969',
-        user: {
-            name: 'Ranger',
-            username: 'rangerl',
-            id: '123'
-        },
-        likes: 5
-      }
-    
-    let container
-    const mockHandler = jest.fn()
+  const blog = {
+    title: 'test blog',
+    author: 'test author',
+    url: 'testurl.com',
+    id: '696969',
+    user: {
+      name: 'Ranger',
+      username: 'rangerl',
+      id: '123'
+    },
+    likes: 5
+  }
 
-    beforeEach(() => {
-        container = render(
-            <Blog blog={blog} user={blog.user} updateBlog={mockHandler}/>
-        ).container
-    })
+  let container
+  const mockHandler = jest.fn()
 
-    test('renders only title and author', () => {
-        const title = screen.queryByText(blog.title)
-        const author = screen.queryByText(blog.author)
-        const url = screen.queryByText(blog.url)
-        const likes = screen.queryByText(blog.likes)
+  beforeEach(() => {
+    container = render(
+      <Blog blog={blog} user={blog.user} updateBlog={mockHandler}/>
+    ).container
+  })
 
-        expect(title).toBeDefined()
-        expect(author).toBeDefined()
-        expect(url).toBeNull()
-        expect(likes).toBeNull()
-      })
+  test('renders only title and author', () => {
+    const title = screen.queryByText(blog.title)
+    const author = screen.queryByText(blog.author)
+    const url = screen.queryByText(blog.url)
+    const likes = screen.queryByText(blog.likes)
 
-    test('renders url and likes after button press', async () => {
-        const user = userEvent.setup()
-        const button = container.querySelector('.setVisible')
-        await user.click(button)
+    expect(title).toBeDefined()
+    expect(author).toBeDefined()
+    expect(url).toBeNull()
+    expect(likes).toBeNull()
+  })
 
-        const url = screen.queryByText(blog.url)
-        const likes = screen.queryByText(blog.likes)
+  test('renders url and likes after button press', async () => {
+    const user = userEvent.setup()
+    const button = container.querySelector('.setVisible')
+    await user.click(button)
 
-        expect(url).toBeDefined()
-        expect(likes).toBeDefined()
-    })
+    const url = screen.queryByText(blog.url)
+    const likes = screen.queryByText(blog.likes)
 
-    test('event handler is called twice when like button is pressed twice', async () => {
-        const user = userEvent.setup()
-        const button = container.querySelector('.setVisible')
-        await user.click(button)
+    expect(url).toBeDefined()
+    expect(likes).toBeDefined()
+  })
 
-        const likeButton = container.querySelector('.likeButton')
-        await user.click(likeButton)
-        await user.click(likeButton)
+  test('event handler is called twice when like button is pressed twice', async () => {
+    const user = userEvent.setup()
+    const button = container.querySelector('.setVisible')
+    await user.click(button)
 
-        expect(mockHandler.mock.calls).toHaveLength(2)
-    })
+    const likeButton = container.querySelector('.likeButton')
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
+  })
 })
